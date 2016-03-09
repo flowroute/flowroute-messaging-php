@@ -31,7 +31,7 @@ The following shows how to import the SDK and setup your API credentials.
 
 	use FlowrouteMessagingLib\Models\Message;
    
-3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/beta/).
+3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/api/).
  > If you do not have an API Key contact support@flowroute.com:
 
 	$controller = new MessagesController('YOUR_API_KEY','YOUR_API_SECRET_KEY');		
