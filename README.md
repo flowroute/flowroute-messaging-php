@@ -40,7 +40,7 @@ The following shows how to import the SDK and setup your API credentials.
 
 ### MessagesController
 
-The MessagesController contains the methods neccesary to both send outbuond SMSs and to retrieve MDRs.
+The MessagesController contains the methods neccesary to both send outbound SMSs and to retrieve MDRs.
 
 #### createMessage ($message)
 
