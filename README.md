@@ -1,48 +1,64 @@
 # flowroute-messaging-php
-## What is it?
+## About flowroute-messaging-php
 
-Flowroute-messaging-php is a PHP SDK that provides methods for sending outbound SMSs with [Flowroute's](https://www.flowroute.com) API v2. These methods can be used to accomplish the following:
+**flowroute-messaging-python** is a PHP SDK that provides methods to create and send an outbound SMS from a Flowroute phone number and to retrieve a Message Detail Record (MDR). These methods use **v2** (version 2) of the [Flowroute](https://www.flowroute.com) API.
 
-* Send outbound SMS
-* Retrieve MDRs (message detail records)
+**Note:** This SDK does not cover searching for a set of MDRs based on a date range. For searching on a date range, see [Look up a Set of Messages](https://developer.flowroute.com/docs/lookup-a-set-of-messages) on the Flowroute Developer Portal.
 
 ## Documentation 
-The full documentation for Flowroute's v2 API is available at [flowroute.readme.io](https://flowroute.readme.io/).
+The full documentation for v2 of the Flowroute API is available [here](https://developer.flowroute.com/v2.0/docs).
 
-## How To Install 
+##Before you begin
 
-We are using composer to manage the dependencies for the SDK and have already included a composer.json file for you. If you do not already have composer setup, please look at [Composer's Getting Started](https://getcomposer.org/doc/00-intro.md) article. Once you have composer setup, run the following command:
+###Composer
+Before importing the SDK you should have **Composer** installed. Composer is used to manage the dependencies for the PHP SDK.This SDK does not discuss setting up Composer. For those instructions, see the [Composer's Getting Started](https://getcomposer.org/doc/00-intro.md) article.  A **composer.json** file is included in the imported SDK to help manage dependencies.
 
-	cd flowroute-messaging-php/
-	composer.phar install
+After setting up Composer:
 
-> Note: You will need to be connected to the internet in order to install the required packages
-  
-## How To Get Setup
+1. Change to the **flowroute-messaging-php** directory:
 
-The following shows how to import the SDK and setup your API credentials.
+		cd flowroute-messaging-php
 
-1) Import the SDK module:
+2.	Next, run the following:
 
-	require_once('vendor/autoload.php');
-	use FlowrouteMessagingLib\Controllers\MessagesController;
+		composer.phar install
+ 
+>**Note:** You must be connected to the Internet in order to install the required packages.
 
-2) Import the Models
+###API Credentials
 
-	use FlowrouteMessagingLib\Models\Message;
+You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
+
+###Flowroute Phone Number
+
+In order to use the create message method a message, you will need your Flowroute phone number, enabled for SMS. If you do not know your phone number, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
+
+## Import the SDK and set up your credentials
+
+The following shows how to import the SDK and setup your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR.
+
+>**Note:** Before you start, you should have your API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
+
+
+1.	Run the following two lines to import the SDK module:
+
+		require_once('vendor/autoload.php');
+		
+		use FlowrouteMessagingLib\Controllers\MessagesController;
+
+2. Import the Models:
+
+		use FlowrouteMessagingLib\Models\Message;
    
-3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/api/).
- > If you do not have an API Key contact support@flowroute.com:
+3.	Configure the MessageController to use your Access Key and Secret Key. Replace the *`Access Key`* and *`Secret Key`* variables within the quotes (`''`) with your own Access Key and Secret Key:
 
-	$controller = new MessagesController('YOUR_API_KEY','YOUR_API_SECRET_KEY');		
+		$controller = new MessagesController('Access Key','Secret Key');		
 
-## List of Methods and Example Uses
+## MessagesController
 
-### MessagesController
+The MessagesController contains the methods neccesary to both send outbound SMSs and to retrieve MDRs. It uses two endpoints: `createMessage` and `getMessageLookup`.
 
-The MessagesController contains the methods neccesary to both send outbound SMSs and to retrieve MDRs.
-
-#### createMessage ($message)
+#### `createMessage ($message)`
 
 The createMessage method is used to send outbound messages from SMS enabled Flowroute numbers.
 
@@ -57,7 +73,7 @@ The createMessage method is used to send outbound messages from SMS enabled Flow
 
 > The Messages model uses ordered parameters for the To phone number(0), From phone number(1), and Message content(2) 
 	
-#### getMessageLookup ($recordId)
+#### `getMessageLookup ($recordId)`
 
 The getMessageLookup method is used to retrieve a MDR (message detail record).
 
