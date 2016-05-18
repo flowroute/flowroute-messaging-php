@@ -1,19 +1,43 @@
 <?php
+/*
+ * Copyright Flowroute Inc. 2016
+ */
 
 require_once('vendor/autoload.php');
+include_once('src/Controllers/MessagesController.php');
+include_once('src/Configuration.php');
+include_once('src/Models/Message.php');
+include_once('src/APIHelper.php');
+include_once('src/APIException.php');
+
 use FlowrouteMessagingLib\Controllers\MessagesController;
 use FlowrouteMessagingLib\Models\Message;
 
 // Demo script
-// Please replace the variables with your information.
-print "Demo SMS PHP script.\n";
+// Please replace the variables in the Configuration.php with your information.
+print "Flowroute, Inc - Demo SMS PHP script.\n";
 
-$controller = new MessagesController('AccesKey','SecretKey');
+// Create a controller
+$controller = new MessagesController();
 print_r($controller);
- $message = new Message('TO_PHONE_NUMBER_E164', 'FROM_PHONE_NUMBER_E164', 'Your cool new SMS message here!');
- $response = $controller->createMessage($message);
 
-//Example use of retrieving a MDR
-//$response = $controller->getMessageLookup('mdr1-b334f89df8de4f8fa7ce377e06090a2e');
+// Build our message
+$from_number = 'FROME_PHONE_NUMBER_E164';
+$to_number = 'TO_PHONE_NUMBER_E164';
+$message = new Message($to_number, $from_number, 'Your cool new SMS message here!');
 
+// Send the message
+$response = $controller->createMessage($message);
 print_r($response);
+
+// get the mdr id from the response
+$mdr_id =  strval($response->data->id);
+
+// Retrieve the MDR record
+try {
+    $mdr_record = $controller->getMessageLookup($mdr_id); // 'mdr1-b334f89df8de4f8fa7ce377e06090a2e'
+    print_r($mdr_record);
+} catch(\FlowrouteMessagingLib\APIException $e) {
+    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage());
+}
+
