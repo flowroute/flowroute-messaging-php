@@ -2,7 +2,7 @@
 /*
  * FlowrouteMessagingLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/11/2016
+ * Copyright Flowroute Inc. 2016
  */
 
 namespace FlowrouteMessagingLib;
@@ -28,7 +28,7 @@ class APIHelper {
         foreach ($parameters as $key => $value) {
             $replaceValue = '';
 
-            //load parameter value
+            // load parameter value
             if (is_null($value)) {
                 $replaceValue = '';
             } elseif (is_array($value)) {
@@ -83,7 +83,9 @@ class APIHelper {
     /**
     * Validates and processes the given Url
     * @param    string	$url The given Url to process
-    * @return   string	Pre-processed Url as string */
+    * @return   string	Pre-processed Url as string
+    * @throws InvalidArgumentException
+    */
     public static function cleanUrl($url)
     {
         //perform parameter validation

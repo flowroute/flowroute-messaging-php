@@ -2,7 +2,7 @@
 /*
  * FlowrouteMessagingLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/11/2016
+ * Copyright Flowroute Inc. 2016
  */
 
 namespace FlowrouteMessagingLib;
@@ -14,7 +14,7 @@ class APIException extends Exception {
     private $responseCode;
     private $responseBody;
     
-    /*
+    /**
      * The HTTP response code from the API request
      * @param string $reason the reason for raising an exception
      * @param int $responseCode the HTTP response code from the API request
@@ -26,7 +26,7 @@ class APIException extends Exception {
         $this->responseBody = $responseBody;
     }
 
-    /*
+    /**
      * The HTTP response code from the API request
      * @return int
      */
@@ -35,7 +35,7 @@ class APIException extends Exception {
         return $this->responseCode;
     }
 
-    /*
+    /**
      * The HTTP response body from the API request
      * @return mixed
      */
@@ -44,7 +44,7 @@ class APIException extends Exception {
         return $this->responseBody;
     }
 
-    /*
+    /**
      * The reason for raising an exception
      * @return string
      */

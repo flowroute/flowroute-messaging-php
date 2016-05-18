@@ -2,11 +2,12 @@
 /*
  * FlowrouteMessagingLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/11/2016
+ * Copyright Flowroute, Inc. 2016
  */
 
 namespace FlowrouteMessagingLib\Models;
 
+use FlowrouteMessagingLib\APIException;
 use JsonSerializable;
 
 class Message implements JsonSerializable {
@@ -34,39 +35,38 @@ class Message implements JsonSerializable {
 	 * @param   string            $from      Initialization value for the property $this->from   
 	 * @param   string            $content   Initialization value for the property $this->content
      */
-    public function __construct()
+    public function __construct($to=null, $from=null, $content=null)
     {
-        if(3 == func_num_args())
-        {
-            $this->to      = func_get_arg(0);
-            $this->from    = func_get_arg(1);
-            $this->content = func_get_arg(2);
-        }
+        $this->to      = $to;
+        $this->from    = $from;
+        $this->content = $content;
     }
 
     /**
      * Return a property of the response if it exists.
      * Possibilities include: code, raw_body, headers, body (if the response is json-decodable)
-     * @return mixed
+     * @param   string              $property   value of property to return
+     * @return mixed or null if property not found
      */
     public function __get($property)
     {
+        $value = null;
         if (property_exists($this, $property)) {
             //UTF-8 is recommended for correct JSON serialization
             $value = $this->$property;
             if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                return utf8_encode($value);
-            }
-            else {
-                return $value;
+                $value = utf8_encode($value);
             }
         }
+        return $value;
     }
     
     /**
      * Set the properties of this object
      * @param string $property the property name
      * @param mixed $value the property value
+     * @return  Message instance that has been updated with the new property
+     * @throws APIException
      */
     public function __set($property, $value)
     {
@@ -78,6 +78,8 @@ class Message implements JsonSerializable {
             else {
                 $this->$property = $value;
             }
+        } else {
+            throw new APIException('Invalid Property', 500, $property);
         }
 
         return $this;
