@@ -2,8 +2,9 @@
 /*
  * FlowrouteMessagingLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/11/2016
+ * Copyright Flowroute Inc. 2016
  */
+
 
 namespace FlowrouteMessagingLib\Controllers;
 
@@ -11,6 +12,7 @@ use FlowrouteMessagingLib\APIException;
 use FlowrouteMessagingLib\APIHelper;
 use FlowrouteMessagingLib\Configuration;
 use Unirest\Unirest;
+
 class MessagesController {
 
     /* private fields for configuration */
@@ -30,7 +32,7 @@ class MessagesController {
     /**
      * Constructor with authentication and configuration parameters
      */
-    function __construct($username, $password)
+    function __construct($username=null, $password=null)
     {
         $this->username = $username ? $username : Configuration::$username;
         $this->password = $password ? $password : Configuration::$password;
@@ -39,9 +41,10 @@ class MessagesController {
     /**
      * Send a message
      * @param  Message     $message     Required parameter: Message Object to send.
-     * @return string response from the API call*/
-    public function createMessage (
-                $message) 
+     * @return string response from the API call
+     * @throws APIException
+     **/
+    function createMessage($message)
     {
         //the base uri for api requests
         $queryBuilder = Configuration::$BASEURI;
@@ -83,9 +86,10 @@ class MessagesController {
     /**
      * Lookup a Message by MDR
      * @param  string     $recordId      Required parameter: Unique MDR ID
-     * @return string response from the API call*/
-    public function getMessageLookup (
-                $recordId) 
+     * @return string response from the API call
+     * @throws APIException
+     **/
+    function getMessageLookup($recordId)
     {
         //the base uri for api requests
         $queryBuilder = Configuration::$BASEURI;
@@ -96,14 +100,14 @@ class MessagesController {
         //process optional query parameters
         APIHelper::appendUrlWithTemplateParameters($queryBuilder, array (
             'record_id' => $recordId,
-            ));
+        ));
 
         //validate and preprocess url
         $queryUrl = APIHelper::cleanUrl($queryBuilder);
 
         //prepare headers
         $headers = array (
-            'user-agent'    => 'Flowroute Messaging SDK 1.0'
+            'user-agent' => 'Flowroute Messaging SDK 1.0'
         );
 
         //prepare API request
