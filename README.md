@@ -23,7 +23,7 @@ After setting up Composer:
 
 2.	Next, run the following:
 
-		composer.phar install
+		php composer.phar install
  
 >**Note:** You must be connected to the Internet in order to install the required packages.
 
