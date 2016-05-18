@@ -22,9 +22,9 @@ $controller = new MessagesController();
 print_r($controller);
 
 // Build our message
-$from_number = 'One of your DIDs';
-$to_number = 'Target Number';
-$message = new Message($to_number, $from_number, 'Flowroute Rocks!');
+$from_number = 'FROME_PHONE_NUMBER_E164';
+$to_number = 'TO_PHONE_NUMBER_E164';
+$message = new Message($to_number, $from_number, 'Your cool new SMS message here!');
 
 // Send the message
 $response = $controller->createMessage($message);
