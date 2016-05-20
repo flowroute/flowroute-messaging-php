@@ -17,11 +17,11 @@ You will need your Flowroute API credentials (Access Key and Secret Key). These 
 
 ### Know your Flowroute phone number
 
-In order to use the create message method a message, you will need your Flowroute phone number, enabled for SMS. If you do not know your phone number, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
+To create and send a message, you will need your Flowroute phone number, which should be enabled for SMS. If you do not know your phone number, or if you need to verify whether or not it is enabled for SMS, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
 
 ###Download Composer
 
-You will need to install Composer, which is used to manage the dependencies for the PHP SDK. This SDK does not cover those steps. See Composer's [Getting Started](https://getcomposer.org/doc/00-intro.md) guide at the Composer web site for the steps to download the setup file. 
+Composer is used to manage the dependencies for the PHP SDK. This SDK does not cover those steps. See Composer's [Getting Started](https://getcomposer.org/doc/00-intro.md) guide at the Composer web site for the steps to download the setup file. After installing the libraries you'll install Composer.
 
 ## Install the libraries
 
