@@ -11,28 +11,17 @@ The full documentation for the v2 Flowroute API is available [here](https://deve
 
 The following are required before you can deploy the SDK.
 
-###1. Install Composer
-Before importing the SDK you should have **Composer** installed, which is used to manage the dependencies for the PHP SDK. This SDK does not discuss setting up Composer. See Composer's [Getting Started](https://getcomposer.org/doc/00-intro.md) guide at the Composer web site for those steps.  
-
-After setting up Composer:
-
-1. Change to the **flowroute-messaging-php** directory:
-
-		cd flowroute-messaging-php
-
-2.	Next, run the following:
-
-		php composer.phar install
- 
->**Note:** You must be connected to the Internet in order to install the required packages.
-
-###2. Have your API credentials
+### Have your API credentials
 
 You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
 
-###3. Know your Flowroute phone number
+### Know your Flowroute phone number
 
 In order to use the create message method a message, you will need your Flowroute phone number, enabled for SMS. If you do not know your phone number, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
+
+###Download Composer
+
+You will need to install Composer, which is used to manage the dependencies for the PHP SDK. This SDK does not cover those steps. See Composer's [Getting Started](https://getcomposer.org/doc/00-intro.md) guide at the Composer web site for the steps to download the setup file. 
 
 ## Install the libraries
 
@@ -50,9 +39,21 @@ In order to use the create message method a message, you will need your Flowrout
  	
 4.	Change directories to the newly created **flowroute-messaging-php** directory.
 
+##Install Composer
+
+1.	Move the downloaded **composer.phar** and **composer-setup.php** files to the **flowroute-messaging-php** directory.
+
+	>**Note:** **composer.phar** must be in the **flowroute-messaging-php** directory in order to install correctly. Composer requires a **composer.json** file, which is included in the imported SDK to help manage dependencies.
+
+2. 	From a terminal window, run the following:
+
+		php composer.phar install
+
+ 	Composer sets up the required file structure.
+ 
 ## Create a PHP file to set up the MessagesController
 
-The following shows how to import the SDK and set up your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR.  A **composer.json** file is included in the imported SDK to help manage dependencies.
+The following shows how to import the SDK and set up your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR. 
 
 1.	Using a code text editor — for example, *Sublime Text* — create a new file and add the following lines:
 
