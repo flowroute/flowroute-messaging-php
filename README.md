@@ -30,12 +30,11 @@ After setting up Composer:
 
 You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
 
-###3. Have your Flowroute phone number
+###3. Know your Flowroute phone number
 
 In order to use the create message method a message, you will need your Flowroute phone number, enabled for SMS. If you do not know your phone number, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
 
-## Install the required libraries
-
+## Install the libraries
 
 > **Note:** You must be connected to the Internet in order to install the required libraries.
 
@@ -45,7 +44,7 @@ In order to use the create message method a message, you will need your Flowrout
  
 3. Go to the newly created folder, and run the following:
 
- 	`https://github.com/flowroute/flowroute-numbers-php.git`
+ 	`https://github.com/flowroute/flowroute-messaging-php.git`
  	
  	The `git clone` command clones the **flowroute-messaging-php** respository as a sub directory within the parent folder.
  	
@@ -72,6 +71,8 @@ The following shows how to import the SDK and set up your API credentials. Impor
 			$message_name = new Message('To', 'From', 'Message content.');
 			
 			$response_name = $controller_name->createMessage($message_name);
+			
+			# $response_name = $controller->getMessageLookup('recordID')
 
 			# print_r($response_name);
 
@@ -79,7 +80,8 @@ The following shows how to import the SDK and set up your API credentials. Impor
 
 2.	Save the file with a PHP extension in your **flowroute-messaging-php** directory. For this example, the file is named ***createmsg.php***.
 
->**Note:** In the example above, the `print_r($response);` is commented out. This line is not needed if you do not need to retrieve an MDR ID for the `getMessageLookup` method. Remove the comment character if you will need this information.
+>**Note:** In the example above, the `print_r($response);` and `$response = $controller->getMessageLookup('recordID')`
+ are commented out. These lines are not needed if you do not need to retrieve an MDR ID for the `getMessageLookup` method. See [getMessageLookup](#getmessage) if you need this information.
 
 ###Set parameters and variables<a name="setparams"></a>
 
@@ -109,11 +111,19 @@ The MessagesController uses the following variables:
 | `$controller_name` | True   | The name of the variable created above. |
 | `$message` | True   | The name of the variable created above. |
 
+#### $response = $controller->getMessageLookup('recordID')
+
+| Parameter | Required | Usage                                                 |
+|-----------|----------|-------------------------------------------------------|
+| `$response_name` | True   | The `response_name` created above. |
+| `controller`  | True   | The `controller_name` created above. |
+| `recordId`      | True | The identifier of an existing record to retrieve. The value should include the`mdr1-`prefix. |
+
 
 ####`print_r($response);`
 | Parameter | Required | Usage                                                           |
 |-----------|----------|-----------------------------------------------------------------|
-| `$response` | True   | The name of the variable created above.                         |
+| `$response_name` | True   | The name of the variable created above.                         |
 
 
 ##### Example Usage
@@ -130,10 +140,12 @@ Using the variable names assigned above, the example ***createmsg.php*** file wo
 
 			$controller = new MessagesController('1234567,'m8axLA45yds7kmiC8257c7BshaADg6vr');
 			
-			$message = new Message('15305557784', '18444205700', 'This is message content.');
+			$message = new Message('15305557784', '18444205700', 'Your message goes here!');
 			
-			$response_name = $controller->createMessage($message);
-
+			$response = $controller->createMessage($message);
+				
+			# $response = $controller->getMessageLookup('recordID')
+			
 			# print_r($response);
 
 		?>
@@ -145,19 +157,19 @@ Using the variable names assigned above, the example ***createmsg.php*** file wo
 
 In a terminal session, 
 
-1.	Change to your **flowroute-messaging-php** directory if you are not already in it.
+1.	Change to the **flowroute-messaging-php** directory if you are not already in it.
 
 2. At the prompt run the following:
 
-	`run` *`<PHP file>`*
+	`php` *`<PHP file>`*
 	
-	For example, `run createmsg.php`.
+	For example, `php createmsg.php`.
 
 #####Message response
 
 Depending on whether or not you commented out the `print_r` response line one of two things will happen:
 
-1.	If the `print_r` line was commented out, the message is sent to the recipient, but no other confirmation is returned is returned.
+1.	If the `print_r` line was commented out, the message is sent to the recipient, but no other confirmation is returned.
 
 2.	If the `print_r` line was not commented out, a response message is returned containing the record ID. For example:
 
@@ -168,22 +180,88 @@ Depending on whether or not you commented out the `print_r` response line one of
      	   )
 
 		)
+	The record ID can then be passed in the getMessageLookup method to return details about the message.
 	
-#### `getMessageLookup ($recordId)`
+#### `getMessageLookup ($recordId)`<a name="getmessage"></a>
 
-The `getMessageLookup` method is used to retrieve an MDR by passing the record identifier of a previously sent message. The request uses the following format:
+The `getMessageLookup` method is used to retrieve an MDR by passing the record identifier of a previously sent message. 
 
-	$controller_name->getMessageLookup('recordID)');
+**To retrieve message details:**
 
-and is composed of the following:
+In your PHP file, 
 
-| Parameter | Required | Usage                                                 |
-|-----------|----------|-------------------------------------------------------|
-| `controller`  | True     | The `controller_name` created in your PHP file. |
-| `recordId`      | True     | The identifier of an existing record to retrieve. The value should include the`mdr1-`prefix. |
+1.	Uncomment the following two lines:
+
+		$response = $controller->getMessageLookup('recordID');
+			
+		print_r($response);
+
+2. Comment out the following two lines:
+
+	`# $message = new Message('To', 'From', 'Message content.');`
+	
+	`# $response = $controller->createMessage($message);`
+	
+	>**Important!** If you do not comment out these lines, a new SMS will be sent, creating a new record ID.
+
+3. Replace the `recordID` on the following line with the record ID of the record for which you want to retrieve details. For example, 
+
+		$response = $controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493'); 
 
 ##### Example Usage
 
-	$controller->getMessageLookup('mdr1-b334f89df8de4f8fa7ce377e06090a88');
+	$response = controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493');
 	
 #####Example response
+	(
+  	  [data] => stdClass Object
+   	     (
+   	         [attributes] => stdClass Object
+                (
+                    [body] => Your message goes here!
+                    [direction] => outbound
+                    [timestamp] => 2016-05-20T17:07:46.322587+00:00
+                    [amount_nanodollars] => 4000000
+                    [from] => 12062092844
+                    [message_encoding] => 0
+                    [has_mms] =>
+                    [to] => 18444205700
+                    [amount_display] => $0.0040
+                    [callback_url] =>
+                    [message_type] => long-code
+                )
+
+            [type] => message
+            [id] => mdr1-6bdb954473d249308d43debd4735b493
+        )
+	)
+	
+######Response message field descriptions
+
+The following information is returned in the response message:
+
+|Parameter | Description                                                 |
+|-----------|----------|-------------------------------------------------------|
+| `data`  | Object composed of `attributes`, `type`, and `id`. |
+|`attributes`    |Object composed of the following:
+|  | <li>`body`: The content of the message.
+|  |<li>`direction`:  The direction of the message. For a sent message, this is `outbound`. For a received message this is`inbound`.
+|  | <li>`timestamp`: Date and time, to the second, on which the message was sent. This field displays UTC time using an ISO 8601 format.
+|  |<li>`amount_nanodollars`: The cost of the message in nanodollars. Because Flowroute uses eight decimal points of precision, the amount in nanodollars is the USD`amount_display` value multiplied by 100,000,000 (one hundred million) for a corresponding whole number.  
+|  |<li>`from`: The Flowroute SMS-enabled number from which the message was sent.
+|  |<li>`message_encoding`: Indicates the encoding type, which will be either `0` (UTF-8) or `8` (UCS-2). See [Message Length & Concatenation](https://developer.flowroute.com/docs/message-length-concatenation) for more information. 
+|  |<li>`has_mms`: Boolean indicating whether or not the message includes a multimedia file. `true` indicates yes, while `false` indicates no. Currently, MMS is not supported; therefore, the default value for this field will always be `false`. 
+|  |<li>`to`: The phone number to which the message was sent.
+|  |<li>`amount_display`: The total cost of the message in USD. If a message was broken into multiple pieces due to concatenation, this amount will be the total amount for all message pieces. This field does _not_ display out to eight decimal points. See _Message cost_ in [Message Length & Concatenation](https://developer.flowroute.com/docs/message-length-concatenation) for more information.
+|  |<li>`callback_URL`The callback URL defined for the Flowroute number on the [Preferences > API Control](https://manage.flowroute.com/accounts/preferences/api/) page, the URL appears in this field; otherwise, the value is `null`.|  
+|  |<li>`message_type`: Indicates the type of message, either `long-code` or `toll-free`. If the message was sent to or received from another phone number, this field displays `long-code`; if sent to or received from a toll-free number, this field displays `toll-free`. </li></ul>| 
+|`type`| Defines what the object is. Because SMS is the only supported object type, this field will always display `message`.|
+|`id` | The unique record identifier of a sent message, generated from a successful message creation.|
+                        
+#####Error response
+The following error can be returned:
+
+| Error code | Message | Description                                                 |
+|-------|----------|-------------------------------------------------------|
+|No code number  |Response Not OK|This error is most commonly returned when the `ID` passed in the method is incorrect or an incorrect `Access Key` or `Secret Key` were used.|
+	
