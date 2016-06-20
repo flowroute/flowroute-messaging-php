@@ -1,6 +1,6 @@
 # flowroute-messaging-php
 
-**flowroute-messaging-python** is a PHP SDK that provides methods to create and send an outbound SMS from a Flowroute phone number and to retrieve a Message Detail Record (MDR). These methods use **v2** (version 2) of the [Flowroute](https://www.flowroute.com) API.
+**flowroute-messaging-python** is a PHP SDK that provides methods to create and send an outbound SMS from a Flowroute phone number and to retrieve a Message Detail Record (MDR) using he MessageController. These methods use **v2** (version 2) of the [Flowroute](https://www.flowroute.com) API.
 
 **Note:** This SDK does not cover searching for a set of MDRs based on a date range. For searching on a date range, see [Look up a Set of Messages](https://developer.flowroute.com/docs/lookup-a-set-of-messages) on the Flowroute Developer Portal.
 
@@ -19,9 +19,13 @@ You will need your Flowroute API credentials (Access Key and Secret Key). These 
 
 To create and send a message, you will need your Flowroute phone number, which should be enabled for SMS. If you do not know your phone number, or if you need to verify whether or not it is enabled for SMS, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
 
+### Get a code text editor
+
+Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either using a terminal window shell or through using a code text editor. For example, *Sublime Text*. 
+
 ###Download Composer
 
-Composer is used to manage the dependencies for the PHP SDK. This SDK does not cover those steps. See Composer's [Getting Started](https://getcomposer.org/doc/00-intro.md) guide at the Composer web site for the steps to download the setup file. After installing the libraries you'll install Composer.
+Composer is used to manage the dependencies for the PHP SDK. The Composer installation file, **composer.phar**, can be downloaded from Composer's web site [here](https://getcomposer.org/download). Download, but do not install it; only after first installing the libraries will you install Composer.
 
 ## Install the libraries
 
@@ -31,17 +35,17 @@ Composer is used to manage the dependencies for the PHP SDK. This SDK does not c
 
 2. If needed, create a parent directory folder where you want to install the SDK.
  
-3. Go to the newly created folder, and run the following:
+3. Go to the newly created directory, and run the following:
 
- 	`https://github.com/flowroute/flowroute-messaging-php.git`
+ 		https://github.com/flowroute/flowroute-messaging-php.git
  	
- 	The `git clone` command clones the **flowroute-messaging-php** respository as a sub directory within the parent folder.
+ 	The `git clone` command clones the **flowroute-messaging-php** repository as a sub directory within the parent folder.
  	
 4.	Change directories to the newly created **flowroute-messaging-php** directory.
 
 ##Install Composer
 
-1.	Move the downloaded **composer.phar** and **composer-setup.php** files to the **flowroute-messaging-php** directory.
+1.	Move the downloaded **composer.phar**  file to the **flowroute-messaging-php** directory.
 
 	>**Note:** **composer.phar** must be in the **flowroute-messaging-php** directory in order to install correctly. Composer requires a **composer.json** file, which is included in the imported SDK to help manage dependencies.
 
@@ -51,13 +55,11 @@ Composer is used to manage the dependencies for the PHP SDK. This SDK does not c
 
  	Composer sets up the required file structure.
  
-## Create a PHP file to set up the MessagesController
+## Create a PHP file to set up MessagesController
 
 The following shows how to import the SDK and set up your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR. 
 
-1.	Using a code text editor — for example, *Sublime Text* — create a new file and add the following lines:
-
-	>**Note:** See [Set parameters and variables](#setparams) below for details about the information required in the file.
+1.	Using a code text editor  create a new file and add the following lines to the top of the file to instantiate the Controller and import the Models:
 
 		<?php
 		
@@ -67,112 +69,94 @@ The following shows how to import the SDK and set up your API credentials. Impor
 
 			use FlowrouteMessagingLib\Models\Message;
 
-			$controller_name = new MessagesController('Access Key','Secret Key');
-			
-			$message_name = new Message('To', 'From', 'Message content.');
-			
-			$response_name = $controller_name->createMessage($message_name);
-			
-			# $response_name = $controller->getMessageLookup('recordID')
+2.	Next add the following lines to authorize your API credentials to work with the Controller:
 
-			# print_r($response_name);
+		$controller_name = new MessagesController('Access Key','Secret Key');
 
-		?>
+3.	Replace the `Access Key` and `Secret Key` variables with your Flowroute API credentials.
 
-2.	Save the file with a PHP extension in your **flowroute-messaging-php** directory. For this example, the file is named ***createmsg.php***.
+4.	Optionally, add a print response line to the end of the file. By adding this line, when a method is invoked, the print response displays the response on screen:
 
+		print_r($response); 
+
+	>**Important:** Throughout this SDK, `response` is used in method examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. In the following example, `response` is changed to `blob` wherever `response` is used:
+>
+>`#List NPA and NXX`<br>
+>`blob = pnc.list_available_np_as(limit:nil)`<br>
+>'print_r($blob))
+
+5.	Save the file with a PHP extension in your **flowroute-messaging-php** directory. For this example, the file is named ***createmsg.php***.
+
+6.	Add the Controller methods. See [MessagesController](#controller) below.
 >**Note:** In the example above, the `print_r($response);` and `$response = $controller->getMessageLookup('recordID')`
  are commented out. These lines are not needed if you do not need to retrieve an MDR ID for the `getMessageLookup` method. See [getMessageLookup](#getmessage) if you need this information.
+ 
+##### Example PHP file
 
-###Set parameters and variables<a name="setparams"></a>
+The following shows an example PHP file with all methods are added. Comment out methods with `#` as needed. For example, you might want to comment out the [createMessage](#createmsg) method lines when invoking the [getMessageLookup](#getmsg) method, or vice versa.
 
-The MessagesController uses the following variables:
-
-**`$controller = new MessagesController('Access Key','Secret Key');`**
-
-
-| Parameter | Required | Usage                                                           |
-|-----------|----------|-----------------------------------------------------------------|
-| `$controller_name` | True   | The variable name assigned to the controller. The variable can have any name, and there is no limit on the length. For this method, `controller` is used.|
-|`Access Key`|True|Your Flowroute Access Key.|
-|`Secret Key`|True|Your Flowroute Secret Key.
-
-**`$message = new Message('To', 'From', 'Message content.');`**
-
-| Parameter | Required | Usage                                                           |
-|-----------|----------|-----------------------------------------------------------------|
-| `$message_name` | True   | The message variable. The variable can have any name, and there is no limit on the length. For this method, `message` is used. The variable is further composed of the following:|
-| | |<li>*`To`* — The recipient's phone number, which must be an E.164 11-digit number formatted as *`1XXXXXXXXXX`*. </li> <li>*`From`* — Your Flowroute phone number, which must be an E.164 11-digit number formatted as *`1XXXXXXXXXX`*.</l><li>*`Message content`*—The message itself. An unlimited number of characters can be used, but message length rules and encoding apply. See [Message Length & Concatenation](https://developer.flowroute.com/docs/message-length-concatenation) for more information.|
-
-####`$response = $controller->createMessage($message);`
-
-| Parameter | Required | Usage                                                           |
-|-----------|----------|-----------------------------------------------------------------|
-| `$response_name` | True   | The message variable. The variable can have any name, and there is no limit on the length. For this method, `response` is used. |
-| `$controller_name` | True   | The name of the variable created above. |
-| `$message` | True   | The name of the variable created above. |
-
-#### $response = $controller->getMessageLookup('recordID')
-
-| Parameter | Required | Usage                                                 |
-|-----------|----------|-------------------------------------------------------|
-| `$response_name` | True   | The `response_name` created above. |
-| `controller`  | True   | The `controller_name` created above. |
-| `recordId`      | True | The identifier of an existing record to retrieve. The value should include the`mdr1-`prefix. |
-
-
-####`print_r($response);`
-| Parameter | Required | Usage                                                           |
-|-----------|----------|-----------------------------------------------------------------|
-| `$response_name` | True   | The name of the variable created above.                         |
-
-
-##### Example Usage
-
-Using the variable names assigned above, the example ***createmsg.php*** file would then resemble the following:
-
-			<?php
-			
+		<?php
+		
 			require_once('vendor/autoload.php');
 
 			use FlowrouteMessagingLib\Controllers\MessagesController;
 
 			use FlowrouteMessagingLib\Models\Message;
-
-			$controller = new MessagesController('1234567,'m8axLA45yds7kmiC8257c7BshaADg6vr');
 			
-			$message = new Message('15305557784', '18444205700', 'Your message goes here!');
+			$controller = new MessagesController('Access Key','Secret Key');
 			
-			$response = $controller->createMessage($message);
-				
-			# $response = $controller->getMessageLookup('recordID')
+			$message_name = new Message('To', 'From', 'Message content');
 			
-			# print_r($response);
-
-		?>
-
-
->**Note:** The Messages model uses ordered parameters for the `To` phone number(0), `From` phone number(1), and `Message content`(2).
-
-###Run the PHP file
-
-In a terminal session, 
-
-1.	Change to the **flowroute-messaging-php** directory if you are not already in it.
-
-2. At the prompt run the following:
-
-	`php` *`<PHP file>`*
+			$response = $controller->createMessage($message_name);
+			
+			$response = $controller->getMessageLookup('recordID');
 	
-	For example, `php createmsg.php`.
+			print_r($response); 			
 
-#####Message response
+Run the file from the **flowroute-messaging-php** directory in a terminal window using the following command:
+
+		php <PHP file name>.php
+	
+## MessagesController<a name="controller"></a>
+
+This section describes the methods contained within the MessagesController. Methods are added to your PHP file between `$controller_name = new MessagesController('Access Key','Secret Key');` and `print_r($response)`. These two methods are:
+
+*	[createMessage](#createmsg)
+
+*	[getMessageLookup](#getmsg)
+
+### Create and send a message<a name=createmsg></a>
+
+The create and send message method is a two-step process. First you create the message content, and then you invoke the Controller to send the message. 
+
+#### Usage
+
+Add the following two lines to your PHP file:
+
+	$message_name = new Message('To', 'From', 'Message content');
+	$response = $controller->createMessage($message_name);
+
+The method takes the following parameters:
+
+| Parameter | Required | Type | Descriptions                                                           |
+|-----------|----------|-------|----------------------------------------------------------|
+| `$message_name` | True |string  | The variable name identifying the message parameters. The variable can have any name, and there is no limit on the length. The name assigned here will then be passed in the `createMessage` response in the second line. The variable is further composed of the following:|
+| || |<li>*`To`* — The recipient's phone number as a string, which must be an E.164 11-digit number formatted as *`1XXXXXXXXXX`*. Required. </li> <li>*`From`* — Your Flowroute phone number, which must be an E.164 11-digit number formatted as *`1XXXXXXXXXX`*. Required.</l><li>*`Message content`*—The message itself as a string. An unlimited number of characters can be used, but message length rules and encoding apply. See [Message Length & Concatenation](https://developer.flowroute.com/docs/message-length-concatenation) for more information.  Required.|
+
+##### Example usage
+
+In this example, a message variable named `mymessage` is created. `To`, `From`, and `Message content` are added, then `mymessage` passed in `$response`.
+
+	$mymessage = new Message('19515557918', '12062092844', 'Get some exercise!');
+	$response = $controller->createMessage($mymessage);
+
+##### Example response
 
 Depending on whether or not you commented out the `print_r` response line one of two things will happen:
 
-1.	If the `print_r` line was commented out, the message is sent to the recipient, but no other confirmation is returned.
+1.	If `print_r($response);` *was* commented out or not added, the message is sent to the recipient, but no other confirmation is returned, or
 
-2.	If the `print_r` line was not commented out, a response message is returned containing the record ID. For example:
+2.	If `print_r($response);` *was not* commented out, a response message is returned containing the record ID:
 
 		(
     	[data] => stdClass Object
@@ -181,45 +165,52 @@ Depending on whether or not you commented out the `print_r` response line one of
      	   )
 
 		)
-	The record ID can then be passed in the getMessageLookup method to return details about the message.
+
+The `id` can then be passed in the [`getMessageLookup`](#getmsg) method to return details about the message.
+
+##### Error response
+
+| Error code | Message  | Description                                                 |
+|------------|----------|-------------------------------------------------------|
+|401| UNAUTHORIZED|The API `Access Key` and/or `Secret Key` are incorrect. |
+|403| FORBIDDEN   |The `From` number is incorrect.            |
+|No error code | HTTP Response Not OK | Typically this error might occur when the `To` number is not formatted as an 11-digit E.164 number.|
 	
-#### `getMessageLookup ($recordId)`<a name="getmessage"></a>
+### `getMessageLookup ($recordId)`<a name="getmessage"></a>
 
-The `getMessageLookup` method is used to retrieve an MDR by passing the record identifier of a previously sent message. 
+The `getMessageLookup` method is used to retrieve an MDR by passing the record identifier of a sent message. To get the message details, you must first modify the PHP file you created above.
 
-**To retrieve message details:**
+####Usage
 
-In your PHP file, 
-
-1.	Uncomment the following two lines:
+Add the following line to your PHP file:
 
 		$response = $controller->getMessageLookup('recordID');
-			
-		print_r($response);
+		
+Comment out the `createMessage` lines as follows:
 
-2. Comment out the following two lines:
+	# $mymessage = new Message('19515557918', '12062092844', 'Get some exercise!');
+	# $response = $controller->createMessage($mymessage);
 
-	`# $message = new Message('To', 'From', 'Message content.');`
-	
-	`# $response = $controller->createMessage($message);`
-	
-	>**Important!** If you do not comment out these lines, a new SMS will be sent, creating a new record ID.
+>**Important!** If you do not comment out these lines, a new SMS will be sent, creating a new record ID.
 
-3. Replace the `recordID` on the following line with the record ID of the record for which you want to retrieve details. For example, 
+The method is composed of the following parameter:
 
-		$response = $controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493'); 
+| Parameter | Required | Type | Descriptions                                                           |
+|-----------|----------|-------|----------------------------------------------------------|
+| `recordID` | True |string  | The record identifier retrieved from the `createMessage` print response.|
 
 ##### Example Usage
 
-	$response = controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493');
+		$response = $controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493');
 	
-#####Example response
+##### Example response
+
 	(
   	  [data] => stdClass Object
    	     (
    	         [attributes] => stdClass Object
                 (
-                    [body] => Your message goes here!
+                    [body] => Get some exercise!
                     [direction] => outbound
                     [timestamp] => 2016-05-20T17:07:46.322587+00:00
                     [amount_nanodollars] => 4000000
@@ -264,5 +255,5 @@ The following error can be returned:
 
 | Error code | Message | Description                                                 |
 |-------|----------|-------------------------------------------------------|
-|No code number  |Response Not OK|This error is most commonly returned when the `ID` passed in the method is incorrect or an incorrect `Access Key` or `Secret Key` were used.|
+|No code number  |Response Not OK|This error is most commonly returned when the `ID` passed in the method is incorrect, or an incorrect `Access Key` or `Secret Key` were used.|
 	
