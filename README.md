@@ -45,7 +45,7 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 
 ##Install Composer
 
-1.	Move the downloaded **composer.phar**  file to the **flowroute-messaging-php** directory.
+1.	Move the downloaded **composer.phar** file to the **flowroute-messaging-php** directory.
 
 	>**Note:** **composer.phar** must be in the **flowroute-messaging-php** directory in order to install correctly. Composer requires a **composer.json** file, which is included in the imported SDK to help manage dependencies.
 
@@ -54,36 +54,57 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 		php composer.phar install
 
  	Composer sets up the required file structure.
- 
-## Create a PHP file to set up MessagesController
 
-The following shows how to import the SDK and set up your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR. 
+With the directory structure set up and Composer installed, you can now invoke the methods to perform functions within the SDK. There are two ways of doing this.
+
+*	[Use demo.php](#usedemo)
+
+*	[Create a PHP file to invoke MessagesController methods](#createphp)
+
+## Use the demo.php fiiles<a name=usedemo></a>
+
+Two demo files,  **demo_send.php** and **demo_recv.php**, are included with the installed libraries. These files contain the information necessary to invoke each of the methods.  You invoke the methods in either of these files by adding your API credentials to the files, then running each file from a terminal window command line: 
+
+	run demo_send.php
+
+or
+
+	run demo_recv.php
+	
+For information on the parameters within the file, see [MessagesController](#controller).
+ 
+## Create a PHP file to invoke MessagesController methods<a name=createphp></a>
+
+The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR. Do this by first creating a file with a code text editor, or through the terminal shell. 
 
 1.	Using a code text editor  create a new file and add the following lines to the top of the file to instantiate the Controller and import the Models:
 
 		<?php
 		
 			require_once('vendor/autoload.php');
-
+			
+			#Instantiate the Controllers
 			use FlowrouteMessagingLib\Controllers\MessagesController;
-
 			use FlowrouteMessagingLib\Models\Message;
 
 2.	Next add the following lines to authorize your API credentials to work with the Controller:
 
+		#Pass your API credentials
 		$controller_name = new MessagesController('Access Key','Secret Key');
 
 3.	Replace the `Access Key` and `Secret Key` variables with your Flowroute API credentials.
 
 4.	Optionally, add a print response line to the end of the file. By adding this line, when a method is invoked, the print response displays the response on screen:
 
+		#Print the Response
 		print_r($response); 
 
 	>**Important:** Throughout this SDK, `response` is used in method examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. In the following example, `response` is changed to `blob` wherever `response` is used:
 >
->`#List NPA and NXX`<br>
->`blob = pnc.list_available_np_as(limit:nil)`<br>
->'print_r($blob))
+>`#Create and Send a Message`<br>
+>`$message_name = new Message('To', 'From', 'Message content');`<br>
+>`$blob = $controller->createMessage($message_name);`<br>
+>`print_r($blob)`
 
 5.	Save the file with a PHP extension in your **flowroute-messaging-php** directory. For this example, the file is named ***createmsg.php***.
 
@@ -91,26 +112,30 @@ The following shows how to import the SDK and set up your API credentials. Impor
 >**Note:** In the example above, the `print_r($response);` and `$response = $controller->getMessageLookup('recordID')`
  are commented out. These lines are not needed if you do not need to retrieve an MDR ID for the `getMessageLookup` method. See [getMessageLookup](#getmessage) if you need this information.
  
+
 ##### Example PHP file
 
-The following shows an example PHP file with all methods are added. Comment out methods with `#` as needed. For example, you might want to comment out the [createMessage](#createmsg) method lines when invoking the [getMessageLookup](#getmsg) method, or vice versa.
+The following shows an example PHP file with all methods added. Before invoking a method, comment out any other method with `#` as needed. For example, you might want to comment out the [createMessage](#createmsg) method lines when invoking the [getMessageLookup](#getmsg) method, and vice versa.
 
 		<?php
 		
 			require_once('vendor/autoload.php');
-
+			
+			#Instantiate the Controllers
 			use FlowrouteMessagingLib\Controllers\MessagesController;
-
 			use FlowrouteMessagingLib\Models\Message;
 			
-			$controller = new MessagesController('Access Key','Secret Key');
+			#Pass your API credentials
+			$controller_name = new MessagesController('Access Key','Secret Key');
 			
+			#Create and Send a message
 			$message_name = new Message('To', 'From', 'Message content');
-			
 			$response = $controller->createMessage($message_name);
 			
+			#Get the MDR
 			$response = $controller->getMessageLookup('recordID');
 	
+			#Print the response
 			print_r($response); 			
 
 Run the file from the **flowroute-messaging-php** directory in a terminal window using the following command:
@@ -133,6 +158,7 @@ The create and send message method is a two-step process. First you create the m
 
 Add the following two lines to your PHP file:
 
+	#Create and Send a message
 	$message_name = new Message('To', 'From', 'Message content');
 	$response = $controller->createMessage($message_name);
 
@@ -147,6 +173,7 @@ The method takes the following parameters:
 
 In this example, a message variable named `mymessage` is created. `To`, `From`, and `Message content` are added, then `mymessage` passed in `$response`.
 
+	#Create and Send a message
 	$mymessage = new Message('19515557918', '12062092844', 'Get some exercise!');
 	$response = $controller->createMessage($mymessage);
 
@@ -184,6 +211,7 @@ The `getMessageLookup` method is used to retrieve an MDR by passing the record i
 
 Add the following line to your PHP file:
 
+		#Get the MDR
 		$response = $controller->getMessageLookup('recordID');
 		
 Comment out the `createMessage` lines as follows:
@@ -201,6 +229,7 @@ The method is composed of the following parameter:
 
 ##### Example Usage
 
+		#Get the MDR
 		$response = $controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493');
 	
 ##### Example response
