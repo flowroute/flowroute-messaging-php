@@ -179,7 +179,7 @@ In this example, a message variable named `mymessage` is created. `To`, `From`, 
 
 ##### Example response
 
-Depending on whether or not you commented out the `print_r` response line one of two things will happen:
+One of the following occurs:
 
 1.	If `print_r($response);` *was* commented out or not added, the message is sent to the recipient, but no other confirmation is returned, or
 
@@ -193,8 +193,10 @@ Depending on whether or not you commented out the `print_r` response line one of
 
 		)
 
-The `id` can then be passed in the [`getMessageLookup`](#getmsg) method to return details about the message.
+	The `id` can then be passed in the [`getMessageLookup`](#getmsg) method to return details about the message.
 
+3.	If an error is encountered, an error message is returned. The message is not sent.
+4. 
 ##### Error response
 
 | Error code | Message  | Description                                                 |
