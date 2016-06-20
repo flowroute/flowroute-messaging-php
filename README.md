@@ -99,7 +99,7 @@ The following describes importing the SDK and setting up your API credentials. I
 		#Print the Response
 		print_r($response); 
 
-	>**Important:** Throughout this SDK, `response` is used in method examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. In the following example, `response` is changed to `blob` wherever `response` is used:
+	>**Important:** Throughout this document, `response` is used in method examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. In the following example, `response` is changed to `blob` wherever `response` is used:
 >
 >`#Create and Send a Message`<br>
 >`$message_name = new Message('To', 'From', 'Message content');`<br>
@@ -174,7 +174,7 @@ The method takes the following parameters:
 In this example, a message variable named `mymessage` is created. `To`, `From`, and `Message content` are added, then `mymessage` passed in `$response`.
 
 	#Create and Send a message
-	$mymessage = new Message('19515557918', '12062092844', 'Get some exercise!');
+	$mymessage = new Message('18444205700', '12062092844', 'Get some exercise!');
 	$response = $controller->createMessage($mymessage);
 
 ##### Example response
@@ -216,7 +216,7 @@ Add the following line to your PHP file:
 		
 Comment out the `createMessage` lines as follows:
 
-	# $mymessage = new Message('19515557918', '12062092844', 'Get some exercise!');
+	# $mymessage = new Message('18444205700', '12062092844', 'Get some exercise!');
 	# $response = $controller->createMessage($mymessage);
 
 >**Important!** If you do not comment out these lines, a new SMS will be sent, creating a new record ID.
@@ -233,6 +233,8 @@ The method is composed of the following parameter:
 		$response = $controller->getMessageLookup('mdr1-6bdb954473d249308d43debd4735b493');
 	
 ##### Example response
+
+> **Note:** The following shows a sample formatted response and is intended only to more easily identify the fields returned in the response.
 
 	(
   	  [data] => stdClass Object
