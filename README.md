@@ -272,7 +272,7 @@ The following information is returned in the response message:
 |  |<ul> <li>`body`: The content of the message.
 |  |<ul><li>`direction`:  The direction of the message. For a sent message, this is `outbound`. For a received message this is`inbound`.
 |  | <ul><li>`timestamp`: Date and time, to the second, on which the message was sent. This field displays UTC time using an ISO 8601 format.
-|  |<ul><li>`amount_nanodollars`: The cost of the message in nanodollars. Because Flowroute uses eight decimal points of precision, the amount in nanodollars is the USD`amount_display` value multiplied by 1,000,000,000 (one billion) for a corresponding whole number.  
+|  |<ul><li>`amount_nanodollars`: The cost of the message in nanodollars. The displayed nanodollars amount is the USD `amount_display` value multiplied by 1,000,000,000 (one billion) for a corresponding whole number. 
 |  |<ul><li>`from`: The Flowroute SMS-enabled number from which the message was sent.
 |  |<ul><li>`message_encoding`: Indicates the encoding type, which will be either `0` (UTF-8) or `8` (UCS-2). See [Message Length & Concatenation](https://developer.flowroute.com/docs/message-length-concatenation) for more information. 
 |  |<ul><li>`has_mms`: Boolean indicating whether or not the message includes a multimedia file. `true` indicates yes, while `false` indicates no. Currently, MMS is not supported; therefore, the default value for this field will always be `false`. 
