@@ -1,10 +1,10 @@
 # flowroute-messaging-php
 
-**flowroute-messaging-python** is a PHP SDK that provides methods to create and send an outbound SMS from a Flowroute phone number and to retrieve a Message Detail Record (MDR) using he MessageController. These methods use **v2** (version 2) of the [Flowroute](https://www.flowroute.com) API.
+**flowroute-messaging-php** is a PHP SDK that provides methods to create and send an outbound SMS from a Flowroute phone number and to retrieve a Message Detail Record (MDR) using the MessageController. These methods use **v2** (version 2) of the [Flowroute](https://www.flowroute.com) API.
 
 **Note:** This SDK does not cover searching for a set of MDRs based on a date range. For searching on a date range, see [Look up a Set of Messages](https://developer.flowroute.com/docs/lookup-a-set-of-messages) on the Flowroute Developer Portal.
 
-### Documentation 
+### Documentation
 The full documentation for the v2 Flowroute API is available [here](https://developer.flowroute.com/v2.0/docs).
 
 ##Before you begin
@@ -21,7 +21,7 @@ To create and send a message, you will need your Flowroute phone number, which s
 
 ### Get a code text editor
 
-Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either using a terminal window shell or through using a code text editor. For example, *Sublime Text*. 
+Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either by using a terminal text editor (e.g. Vim, Emacs) or a code text editor. For example, [Sublime Text](https://sublimetext.com). 
 
 ###Download Composer
 
@@ -74,10 +74,9 @@ or
 For information on the parameters within the file, see [MessagesController](#controller).
  
 ## Create a PHP file to invoke MessagesController methods<a name=createphp></a>
-
 The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the MessageController, which contains the methods used to create and send messages, and to look up an MDR. Do this by first creating a file with a code text editor, or through the terminal shell. 
 
-1.	Using a code text editor  create a new file and add the following lines to the top of the file to instantiate the Controller and import the Models:
+1. Using a code text editor  create a new file and add the following lines to the top of the file to instantiate the Controller and import the Models:
 
 		<?php
 		
